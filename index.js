@@ -1,5 +1,4 @@
-// https://tc39.github.io/ecma262/#sec-sortcompare
-;(function (Array) {
+;(function (Object, Array) {
     var proto = Array.prototype, sort = proto.sort, map = proto.map;
 
     function wrap(item, index) {
@@ -8,12 +7,14 @@
 
     function newCmp(fn) {
         return function (a, b) {
-            return +fn(a[0], b[0]) || a[1] - b[1];
+            // https://tc39.github.io/ecma262/#sec-sortcompare
+            return +fn.call(undefined, a[0], b[0]) || a[1] - b[1];
         };
     }
 
     if (!function () {
-            var expando = +new Date() + '';
+            // longer than 22
+            var expando = 'stable-sort-expando-' + ('' + Math.random()).replace(/\D+/g, '');
             return expando.split('').sort(function () {
                 return 0;
             }).join('') === expando;
@@ -34,4 +35,4 @@
         };
     }
 
-})(Array);
+})(Object, Array);
