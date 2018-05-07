@@ -1,4 +1,4 @@
-;(function (Object, Array) {
+;(function (Object, Array, String) {
     var proto = Array.prototype, sort = proto.sort, map = proto.map, call = wrap.call.bind(wrap.call),
         apply = wrap.apply.bind(wrap.apply);
 
@@ -42,4 +42,4 @@
         };
     }
 
-})(Object, Array);
+})(Object, Array, String);
