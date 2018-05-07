@@ -1,3 +1,4 @@
+// https://tc39.github.io/ecma262/#sec-sortcompare
 ;(function (Array) {
     var proto = Array.prototype, sort = proto.sort, map = proto.map;
 
@@ -7,7 +8,7 @@
 
     function newCmp(fn) {
         return function (a, b) {
-            return fn(a[0], b[0]) || a[1] - b[1];
+            return +fn(a[0], b[0]) || a[1] - b[1];
         };
     }
 
