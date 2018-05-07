@@ -8,8 +8,8 @@
 
     function newCmp(fn) {
         // https://tc39.github.io/ecma262/#sec-sortcompare
-        return fn ? function (a, b) {
-            return +call(fn, undefined, a[0], b[0]) || a[1] - b[1];
+        return fn ? function (x, y) {
+            return +call(fn, undefined, x[0], y[0]) || x[1] - y[1];
         } : function (x, y) {
             var xString = String(x[0]), yString = String(y[0]);
             if (xString < yString) return -1;
@@ -19,12 +19,12 @@
     }
 
     if (!function () {
-        // longer than 22
-        var expando = 'stable-sort-expando-' + ('' + Math.random()).replace(/\D+/g, '');
-        return expando.split('').sort(function () {
-            return 0;
-        }).join('') === expando;
-    }()) {
+            // longer than 22
+            var expando = 'stable-sort-expando-' + Math.random();
+            return expando.split('').sort(function () {
+                return 0;
+            }).join('') === expando;
+        }()) {
         proto.sort = function (cmp) {
             var obj = Object(this), tmp, sorted;
             // FIXED Array.from({length:30},(x,i)=>({value:i,toString(){return 'null'}})).sort();
