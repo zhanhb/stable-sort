@@ -7,9 +7,14 @@
     }
 
     function newCmp(fn) {
-        return function (a, b) {
-            // https://tc39.github.io/ecma262/#sec-sortcompare
+        // https://tc39.github.io/ecma262/#sec-sortcompare
+        return fn ? function (a, b) {
             return +call(fn, undefined, a[0], b[0]) || a[1] - b[1];
+        } : function (x, y) {
+            var xString = String(x[0]), yString = String(y[0]);
+            if (xString < yString) return -1;
+            if (yString < xString) return 1;
+            return x[1] - y[1];
         };
     }
 
@@ -22,7 +27,8 @@
     }()) {
         proto.sort = function (cmp) {
             var obj = Object(this), tmp, sorted;
-            if (typeof cmp === 'function') {
+            // FIXED Array.from({length:30},(x,i)=>({value:i,toString(){return 'null'}})).sort();
+            if (typeof cmp === 'function' || typeof cmp === 'undefined') {
                 sorted = call(sort, call(map, obj, wrap), newCmp(cmp));
                 // FIXED Array.prototype.sort.call({0:1,1:0,get length(){return 2}},(x,y)=>x-y)
                 // FIXED [,,,1,2,3].sort(()=>0);
@@ -31,7 +37,7 @@
                 }
                 return obj;
             }
-            // TODO not implements when compareFunction is undefined
+            // usually a TypeError is thrown
             return apply(sort, obj, arguments);
         };
     }
