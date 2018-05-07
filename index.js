@@ -1,5 +1,6 @@
 ;(function (Object, Array) {
-    var proto = Array.prototype, sort = proto.sort, map = proto.map, call = wrap.call.bind(wrap.call);
+    var proto = Array.prototype, sort = proto.sort, map = proto.map, call = wrap.call.bind(wrap.call),
+        apply = wrap.apply.bind(wrap.apply);
 
     function wrap(item, index) {
         return [item, index];
@@ -31,7 +32,7 @@
                 return obj;
             }
             // TODO not implements when compareFunction is undefined
-            return sort.apply(obj, arguments);
+            return apply(sort, obj, arguments);
         };
     }
 
