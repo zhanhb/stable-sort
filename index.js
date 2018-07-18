@@ -14,18 +14,20 @@
         return A;
     }
 
+    function defaultCmp(x, y) {
+        var xString = String(x[0]), yString = String(y[0]);
+        if (xString < yString)
+            return -1;
+        if (yString < xString)
+            return 1;
+        return x[1] - y[1];
+    }
+
     function newCmp(fn) {
         // https://tc39.github.io/ecma262/#sec-sortcompare
         return fn ? function (x, y) {
             return +call.call(fn, undefined, x[0], y[0]) || x[1] - y[1];
-        } : function (x, y) {
-            var xString = String(x[0]), yString = String(y[0]);
-            if (xString < yString)
-                return -1;
-            if (yString < xString)
-                return 1;
-            return x[1] - y[1];
-        };
+        } : defaultCmp;
     }
 
     if (!function () {
