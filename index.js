@@ -1,3 +1,6 @@
+'use strict';
+
+// stable sort
 ;(function (Object, Array, String) {
     var proto = Array.prototype, sort = proto.sort, call = newCmp.call,
             apply = newCmp.apply;
@@ -26,7 +29,7 @@
     function newCmp(fn) {
         // https://tc39.github.io/ecma262/#sec-sortcompare
         return fn ? function (x, y) {
-            return +call.call(fn, undefined, x[0], y[0]) || x[1] - y[1];
+            return +call.call(fn, void 0, x[0], y[0]) || x[1] - y[1];
         } : defaultCmp;
     }
 
