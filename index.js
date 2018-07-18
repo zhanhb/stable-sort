@@ -1,6 +1,6 @@
 ;(function (Object, Array, String) {
-    var proto = Array.prototype, sort = proto.sort, call = newCmp.call.bind(newCmp.call),
-            apply = newCmp.apply.bind(newCmp.apply);
+    var proto = Array.prototype, sort = proto.sort, call = newCmp.call,
+            apply = newCmp.apply;
 
     function wrap(obj) {
         obj = Object(obj);
@@ -17,7 +17,7 @@
     function newCmp(fn) {
         // https://tc39.github.io/ecma262/#sec-sortcompare
         return fn ? function (x, y) {
-            return +call(fn, undefined, x[0], y[0]) || x[1] - y[1];
+            return +call.call(fn, undefined, x[0], y[0]) || x[1] - y[1];
         } : function (x, y) {
             var xString = String(x[0]), yString = String(y[0]);
             if (xString < yString)
@@ -39,7 +39,7 @@
             var obj = Object(this), tmp, sorted;
             // FIXED Array.from({length:30},(x,i)=>({value:i,toString(){return 'null'}})).sort();
             if (typeof cmp === 'function' || typeof cmp === 'undefined') {
-                sorted = call(sort, wrap(obj), newCmp(cmp));
+                sorted = call.call(sort, wrap(obj), newCmp(cmp));
                 // FIXED Array.prototype.sort.call({0:1,1:0,get length(){return 2}},(x,y)=>x-y)
                 // FIXED [,,,1,2,3].sort(()=>0);
                 for (var i = 0, length = sorted.length; i < length; ++i) {
@@ -48,7 +48,7 @@
                 return obj;
             }
             // usually a TypeError is thrown
-            return apply(sort, obj, arguments);
+            return apply.call(sort, obj, arguments);
         };
     }
 
