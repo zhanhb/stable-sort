@@ -3,7 +3,7 @@
 // stable sort
 ;(function (Object, Array, String) {
     var proto = Array.prototype, sort = proto.sort, call = newCmp.call,
-            apply = newCmp.apply;
+        apply = newCmp.apply;
 
     function wrap(obj) {
         obj = Object(obj);
@@ -34,11 +34,13 @@
     }
 
     if (!function () {
-        // longer than 22
-        var expando = 'stable-sort-expando-' + Math.random();
-        return expando.split('').sort(function () {
-            return 0;
-        }).join('') === expando;
+        var expando = 'stable-sort-expando';
+        // IE 9 - Edge 13 have stable sorts for arrays with < 512 elements
+        // https://stackoverflow.com/questions/3026281/array-sort-sorting-stability-in-different-browsers
+        for (var i = 0; i < 5; ++i) expando += expando;
+        return expando.split('').sort(function (a, b) {
+            return (a === 'o') - (b === 'o');
+        }).join('') === expando.replace(/o/g, '') + expando.replace(/[^o]/g, '');
     }()) {
         proto.sort = function (cmp) {
             var obj = Object(this), tmp, sorted;
