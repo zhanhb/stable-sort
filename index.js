@@ -2,8 +2,7 @@
 
 // stable sort
 ;(function (Object, Array) {
-    var proto = Array.prototype, origin_sort = proto.sort, call = newCmp.call,
-            apply = newCmp.apply;
+    var proto = Array.prototype, origin_sort = proto.sort, call = newCmp.call, apply = newCmp.apply;
 
     function wrap(obj) {
         obj = Object(obj);
@@ -35,8 +34,7 @@
     }
 
     function sort(cmp) {
-        if (typeof cmp !== 'function' && typeof cmp !== 'undefined'
-                || (typeof this === 'undefined' || this === null)) {
+        if (typeof cmp !== 'function' && typeof cmp !== 'undefined' || (typeof this === 'undefined' || this === null)) {
             // usually a TypeError is thrown
             return apply.call(origin_sort, this, arguments);
         }
@@ -57,9 +55,11 @@
         // https://stackoverflow.com/questions/3026281/array-sort-sorting-stability-in-different-browsers
         for (var i = 0; i < 5; ++i)
             expando += expando;
-        return expando.split('').sort(function (a, b) {
+        if (expando.split('').sort(function (a, b) {
             return (a === 'o') - (b === 'o');
-        }).join('') === expando.replace(/o/g, '') + expando.replace(/[^o]/g, '');
-    }()) || (proto.sort = sort);
+        }).join('') !== expando.replace(/o/g, '') + expando.replace(/[^o]/g, '')) {
+            proto.sort = sort;
+        }
+    }());
 
 })(Object, Array);
