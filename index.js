@@ -50,11 +50,10 @@
     }
 
     (function () {
-        var expando = 'stable-sort-expando';
+        var expando = 'stable-sort-expando', i = 5;
         // IE 9 - Edge 13 have stable sorts for arrays with < 512 elements
         // https://stackoverflow.com/questions/3026281/array-sort-sorting-stability-in-different-browsers
-        for (var i = 0; i < 5; ++i)
-            expando += expando;
+        while (i--) expando += expando;
         if (expando.split('').sort(function (a, b) {
             return (a === 'o') - (b === 'o');
         }).join('') !== expando.replace(/o/g, '') + expando.replace(/[^o]/g, '')) {
