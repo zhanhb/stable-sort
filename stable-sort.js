@@ -56,7 +56,10 @@
         while (i--) expando += expando;
         if (expando.split('').sort(function (a, b) {
             return (a === 'o') - (b === 'o');
-        }).join('') !== expando.replace(/o/g, '') + expando.replace(/[^o]/g, '')) {
+        }).join('') !== expando.replace(/o/g, '') + expando.replace(/[^o]/g, '') || [,,,1,2,3].sort(function() {
+            return 0;
+            // Fix chrome 75 which is not stable if there's empty elements in the array.
+        }).join('.') !== '1.2.3...') {
             proto.sort = sort;
         }
     }());
